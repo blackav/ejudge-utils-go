@@ -9,9 +9,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/blackav/ejudge-utils-go/pkg/aitypes"
 	"github.com/blackav/ejudge-utils-go/pkg/ejclient"
 	"github.com/blackav/ejudge-utils-go/pkg/ejtypes"
+	"github.com/blackav/ejudge-utils-go/pkg/gentypes"
 	"github.com/blackav/ejudge-utils-go/pkg/slogt"
 	"github.com/cbroglie/mustache"
 	"github.com/google/uuid"
@@ -19,14 +19,14 @@ import (
 
 type Config struct {
 	Ejudge       ejclient.Client
-	Generator    aitypes.Generator
+	Generator    gentypes.Generator
 	ID           string
 	TemplateFile string
 }
 
 type App struct {
 	Ejudge       ejclient.Client
-	Generator    aitypes.Generator
+	Generator    gentypes.Generator
 	ID           string
 	TemplateFile string
 }

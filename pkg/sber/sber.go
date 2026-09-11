@@ -14,7 +14,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/blackav/ejudge-utils-go/pkg/aitypes"
+	"github.com/blackav/ejudge-utils-go/pkg/gentypes"
 	"github.com/google/uuid"
 )
 
@@ -53,7 +53,7 @@ func loadCertificates(file string) (*tls.Config, error) {
 	}, nil
 }
 
-func New(_ context.Context, cfg *Config) (aitypes.Generator, error) {
+func New(_ context.Context, cfg *Config) (gentypes.Generator, error) {
 	var tr *http.Transport
 	if cfg.CertFile != "" {
 		tls, err := loadCertificates(cfg.CertFile)
@@ -131,7 +131,7 @@ type listModelResponse struct {
 	Data []listModelResponseItem
 }
 
-func (s *SberState) ListModels(ctx context.Context) ([]aitypes.ModelInfo, error) {
+func (s *SberState) ListModels(ctx context.Context) ([]gentypes.ModelInfo, error) {
 	err := s.RefreshToken(ctx)
 	if err != nil {
 		return nil, err
@@ -157,10 +157,10 @@ func (s *SberState) ListModels(ctx context.Context) ([]aitypes.ModelInfo, error)
 	if err != nil {
 		return nil, err
 	}
-	res := []aitypes.ModelInfo{}
+	res := []gentypes.ModelInfo{}
 	for i := range jr.Data {
 		src := &jr.Data[i]
-		res = append(res, aitypes.ModelInfo{
+		res = append(res, gentypes.ModelInfo{
 			ID:      src.ID,
 			Object:  src.Object,
 			Type:    src.Type,
@@ -207,18 +207,18 @@ type completionResult struct {
 	Usage        *completionResultUsage    `json:"usage,omitempty"`
 }
 
-func copyUsage(src *completionResultUsage) *aitypes.CompletionResultUsage {
+func copyUsage(src *completionResultUsage) *gentypes.CompletionResultUsage {
 	if src == nil {
 		return nil
 	}
-	return &aitypes.CompletionResultUsage{
+	return &gentypes.CompletionResultUsage{
 		InputTokens:  src.InputTokens,
 		OutputTokens: src.OutputTokens,
 		TotalTokens:  src.TotalTokens,
 	}
 }
 
-func (s *SberState) SimpleCompletion(ctx context.Context, model string, text string) (*aitypes.CompletionResult, error) {
+func (s *SberState) SimpleCompletion(ctx context.Context, model string, text string) (*gentypes.CompletionResult, error) {
 	err := s.RefreshToken(ctx)
 	if err != nil {
 		return nil, err
@@ -273,7 +273,7 @@ func (s *SberState) SimpleCompletion(ctx context.Context, model string, text str
 		}
 	}
 
-	return &aitypes.CompletionResult{
+	return &gentypes.CompletionResult{
 		Model:     scr.Model,
 		CreatedAt: time.Unix(scr.CreatedAt, 0),
 		Text:      resultText,

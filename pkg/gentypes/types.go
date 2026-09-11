@@ -1,4 +1,4 @@
-package aitypes
+package gentypes
 
 import (
 	"context"

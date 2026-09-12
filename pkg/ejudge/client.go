@@ -80,6 +80,9 @@ func genericPost[S any, T any](ctx context.Context, c *DefaultClient, path strin
 func (c *DefaultClient) ListPendingReviews(ctx context.Context, req *ejclient.ListPendingReviewsRequest) (int, *ejclient.Reply[ejclient.ListPendingReviewsResult], error) {
 	params := url.Values{}
 	params.Add("date_mode", req.DateMode.String())
+	if req.ContestIDs != nil {
+		params.Add("contest_ids", req.ContestIDs.String())
+	}
 	fullURL := c.Config.URL + listPendingReviewsPath + "?" + params.Encode()
 	return genericGet[ejclient.ListPendingReviewsResult](ctx, c, fullURL)
 }

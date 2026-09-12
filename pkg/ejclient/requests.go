@@ -1,6 +1,9 @@
 package ejclient
 
 import (
+	"bytes"
+	"strconv"
+
 	"github.com/blackav/ejudge-utils-go/pkg/ejtypes"
 	"github.com/google/uuid"
 )
@@ -54,6 +57,21 @@ type ListActiveReviewsRequest struct {
 type GetActiveReviewRequest struct {
 	DateMode   RequestDateMode `json:"date_mode,omitempty"`
 	ReviewUUID uuid.UUID       `json:"review_uuid"`
+}
+
+func (v ListPendingReviewsRequestIDs) String() string {
+	buffer := bytes.Buffer{}
+	if v.Any {
+		_ = buffer.WriteByte('*')
+	} else {
+		sep := ""
+		for _, id := range v.ContestIDs {
+			buffer.WriteString(sep)
+			buffer.WriteString(strconv.Itoa(int(id)))
+			sep = ","
+		}
+	}
+	return buffer.String()
 }
 
 func String(s string) *string {

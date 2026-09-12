@@ -87,6 +87,8 @@ func (a *App) doReview(ctx context.Context, rr *ejclient.StartReviewResult) erro
 		return err
 	}
 
+	slog.Info("start review", slog.String("reviewUUID", rr.Review.ReviewUUID.String()))
+
 	review, err := a.Generator.SimpleCompletion(ctx, "", text)
 	if err != nil {
 		return err
